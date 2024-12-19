@@ -6,8 +6,16 @@ on:
       vers:
         description: 'Version to deploy'
         required: true
-        type: string
+        type: choice
         default: 'v1'
+        options:
+          - v1
+          - v2
+          - v3
+          - v4
+          - v5
+          - v6
+          - v7
       env:
         description: 'Env to deploy'
         required: true
