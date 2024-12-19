@@ -24,9 +24,9 @@ jobs:
       - name: Storing secret
         run: |
           echo "api_key = ${{ secrets.API_KEY }}" >> ~/.apikey
-          
+
       - name: Set up environment
-        run: echo "Setting up environment for  ${{ vars.ACCESS_ENV }} and secret for ${{vars.ACCESS_ENV}} is $(cat ~/apikey)"
+        run: echo "Setting up environment for  ${{ vars.ACCESS_ENV }} and secret for ${{vars.ACCESS_ENV}} is $(cat ~/.apikey)"
 
       - name: Deploy to ${{ vars.ACCESS_ENV }}
         run: |
