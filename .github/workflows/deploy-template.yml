@@ -12,23 +12,20 @@ on:
         description: 'The version to deploy'
         required: true
         type: string
-    secrets:  
-      token:
-        description: 'Demo token'
-        required: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up environment
-        run: echo "Setting up environment for ${{ inputs.environment }} and token is ${{ secrets.token }}"
+        run: echo "Setting up environment for ${{ env.ACCESS_ENV }} and token is ${{ secrets.ENV }}"
 
-      - name: Deploy to ${{ inputs.environment }}
+      - name: Deploy to ${{ env.ACCESS_ENV }}
         run: |
-          echo "Deploying version ${{ inputs.version }} to ${{ inputs.environment }}"
+          echo "Deploying version ${{ inputs.version }} to ${{ env.ACCESS_ENV }}"
 
       # Add more steps here to deploy, such as using SSH, Kubernetes, etc.
