@@ -1,0 +1,33 @@
+name: Outputs
+on: 
+#   push:
+  workflow_dispatch:
+    inputs:
+        build-status:
+            type: choice
+            description: Skip deployment and only print build output
+            default: success
+            options:
+                - success
+                - failure
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        outputs:
+                name: ${{steps.step1.outputs.status}}
+        steps:
+            - id: step1
+              run: |
+                echo "status=${{inputs.build-status}}" >> "$GITHUB_OUTPUT"
+
+            - name: Build
+              run: |
+                echo "status=${{inputs.build-status}}"
+    deploy:
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - name: Deploy
+              if: ${{needs.build.outputs.name == 'success'}}
+              run: echo "Deploying"

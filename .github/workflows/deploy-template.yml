@@ -1,0 +1,34 @@
+# .github/workflows/deploy-template.yml
+name: Deploy Template
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Target environment (dev, uat, prod)'
+        required: true
+        type: string
+      version:
+        description: 'The version to deploy'
+        required: true
+        type: string
+    secrets:  
+      token:
+        description: 'Demo token'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up environment
+        run: echo "Setting up environment for ${{ inputs.environment }} and token is ${{ secrets.token }}"
+
+      - name: Deploy to ${{ inputs.environment }}
+        run: |
+          echo "Deploying version ${{ inputs.version }} to ${{ inputs.environment }}"
+
+      # Add more steps here to deploy, such as using SSH, Kubernetes, etc.

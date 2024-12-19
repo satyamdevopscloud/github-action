@@ -1,0 +1,52 @@
+name: Contexts
+run-name: DEBUG - ${{inputs.debug && 'ON' || 'OFF'}}
+on: 
+  # push:
+  workflow_dispatch:
+    inputs: 
+      debug:
+        type: boolean
+        default: false
+env:
+  MY_WORKFLOW_VAR: 'workflow'
+  MY_VAL: ${{vars.MY_VAR || 'no_value'}}
+jobs:
+    echo-data:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Print Env Variables
+              env:  
+                STEP_VAR: "I am step env"
+                SATY_VAR: "I am satyam env"
+              run: |
+                exit 1
+
+            - name: I will be skipped
+              if: ${{success()}}
+              run: |
+                echo "I will print previous steps sucess"
+
+            - name: I will be fail
+              if: ${{ failure()}}
+              run: |
+                echo "I will be print if any previos steps fail"
+
+            # - name: Display info
+            #   run: |
+            #     echo "Event name: ${{github.event_name}}"
+            #     echo "Var Name: ${{env.MY_WORKFLOW_VAR}}"
+            #     echo "Ref: ${{github.ref}}"
+            #     echo "SHA: ${{github.actor}}"
+            #     echo "Workflow: ${{github.workflow}}"
+            #     echo "NewVlau: ${{env.MY_VAL}}"
+                
+            # - name: '[debug] Print start-up data'
+            #   if: ${{inputs.debug}} 
+            #   run: |
+            #     echo "Triggered by : ${{ github.event_name}}"
+            #     echo "Branch: ${{github.ref}}"
+            #     echo "Commit SHA: ${{github.sha}}"
+
+            # - name: '[Debug] print when triggered from main'
+              # if: ${{inputs.debug && github.ref == 'refs/heads/main'}}
+            #   run: echo "I was triggered from main" 

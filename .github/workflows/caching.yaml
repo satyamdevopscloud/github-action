@@ -1,0 +1,34 @@
+name: Caching
+on: 
+  # push:
+  workflow_dispatch:
+    inputs: 
+      use-cache:
+        type: boolean
+        default: true
+        description: Wheather to execute cache step
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Creating files for depencies
+              run: |
+                mkdir test
+                touch test/test.txt
+                echo "This is for testing" > test/test.txt
+
+            - name: Download cached dependencies
+              uses: actions/cache@v4
+              id: cache
+              if: ${{inputs.use-cache}}
+              with: 
+                path: test
+                key: ${{hashFiles('test/test.txt')}}
+
+            - name: printing files
+              if: ${{steps.cache.outputs.cache-hit != true}}
+              run: |
+                echo "Cach not Found"
+                cat test/test.txt
+

@@ -1,0 +1,55 @@
+name: Inputs
+on: 
+#   push:
+  workflow_dispatch:
+    inputs:
+        dry-run:
+            type: boolean
+            description: Skip deployment and only print build output
+            default: false
+        target:
+            type: choice
+            description: Choose which env to deploy
+            options:
+                - dev
+                - stag
+                - prod
+        tag:
+            type: choice
+            description: Choose which version to deploy
+            options:
+                - v1
+                - v2
+                - v3
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        if: ${{!inputs.dry-run}}
+        steps:
+            - name: build
+              run: |
+                echo "Tag Building: ${{inputs.tag}}"
+    deploy-dev:
+        needs: build
+        runs-on: ubuntu-latest
+        if: ${{!inputs.dry-run && inputs.target == 'dev'}}
+        steps:
+            - name: deploy-dev
+              run: |
+                echo "Deploy Succesfully: ${{inputs.target}}"
+    deploy-stag:
+        needs: build
+        runs-on: ubuntu-latest
+        if: ${{!inputs.dry-run && inputs.target == 'stag'}}
+        steps:
+            - name: deplay-stag
+              run: |
+                echo "Deploy Succesfully: ${{inputs.target}}"
+    deploy-prod:
+        needs: build
+        runs-on: ubuntu-latest
+        if: ${{!inputs.dry-run && inputs.target == 'prod'}}
+        steps:
+            - name: deloy-prod
+              run: |
+                echo "Deploy Succesfully: ${{inputs.target}}"

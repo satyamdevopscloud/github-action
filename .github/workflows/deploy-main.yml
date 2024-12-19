@@ -1,0 +1,43 @@
+# .github/workflows/deploy-main.yml
+name: Deploy Main
+
+on:
+  workflow_dispatch:
+    inputs:
+      vers:
+        description: 'Version to deploy'
+        required: true
+        type: string
+      env:
+        description: 'Env to deploy'
+        required: true
+        type: string
+        default: 'dev'
+
+jobs:
+  deploy-dev:
+    uses: ./.github/workflows/deploy-template.yml
+    if: ${{ inputs.env == 'dev' }}
+    with:
+      environment: ${{ inputs.env }}
+      version: ${{ inputs.vers }}
+    secrets:
+      token: ${{ secrets.SAMPLE_TOKEN }}  # Correctly passing the secret here
+
+  deploy-uat:
+    if: ${{ inputs.env == 'uat' }}
+    uses: ./.github/workflows/deploy-template.yml
+    with:
+      environment: ${{ inputs.env }}
+      version: ${{ inputs.vers }}
+    secrets:
+      token: ${{ secrets.SAMPLE_TOKEN }}  # Correctly passing the secret here
+
+  deploy-prod:
+    if: ${{ inputs.env == 'prod' }}
+    uses: ./.github/workflows/deploy-template.yml
+    with:
+      environment: ${{ inputs.env }}
+      version: ${{ inputs.vers }}
+    secrets:
+      token: ${{ secrets.SAMPLE_TOKEN }}  # Correctly passing the secret here
