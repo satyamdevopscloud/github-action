@@ -13,7 +13,6 @@ on:
         required: true
         type: string
         
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -23,7 +22,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up environment
-        run: echo "Setting up environment for ${{ env.ACCESS_ENV }} and token is ${{ secrets.ENV }}"
+        run: echo "Setting up environment for  ${{ env.ACCESS_ENV }} and secret for ${{env.ACCESS_ENV}} is ${{ secrets.ENV }}"
 
       - name: Deploy to ${{ env.ACCESS_ENV }}
         run: |
