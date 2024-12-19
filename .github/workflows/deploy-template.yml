@@ -20,9 +20,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      
+      - name: Storing secret
+        run: |
+          echo "${{secrets.API_KEY}}" > filename.txt
+
 
       - name: Set up environment
-        run: echo "Setting up environment for  ${{ vars.ACCESS_ENV }} and secret for ${{vars.ACCESS_ENV}} is ${{ secrets.ENV }}"
+        run: echo "Setting up environment for  ${{ vars.ACCESS_ENV }} and secret for ${{vars.ACCESS_ENV}} is $(cat filename.txt)"
 
       - name: Deploy to ${{ vars.ACCESS_ENV }}
         run: |
