@@ -12,6 +12,7 @@ on:
         description: 'The version to deploy'
         required: true
         type: string
+        
 
 jobs:
   deploy:
